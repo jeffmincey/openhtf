@@ -39,7 +39,7 @@ except ImportError:
   pass
 
 import httplib2
-import oauth2client.client
+# import oauth2client.client
 
 from openhtf.core import measurements
 from openhtf.core import test_record
@@ -392,23 +392,23 @@ class UploadToMfgInspector(object):
                      'uploads/quantum_upload/?json')
 
   # pylint: disable=invalid-name,missing-docstring
-  class _MemStorage(oauth2client.client.Storage):
-    """Helper Storage class that keeps credentials in memory."""
-    def __init__(self):
-      self._lock = threading.Lock()
-      self._credentials = None
+  # class _MemStorage(oauth2client.client.Storage):
+  #   """Helper Storage class that keeps credentials in memory."""
+  #   def __init__(self):
+  #     self._lock = threading.Lock()
+  #     self._credentials = None
 
-    def acquire_lock(self):
-      self._lock.acquire(True)
+  #   def acquire_lock(self):
+  #     self._lock.acquire(True)
 
-    def release_lock(self):
-      self._lock.release()
+  #   def release_lock(self):
+  #     self._lock.release()
 
-    def locked_get(self):
-      return self._credentials
+  #   def locked_get(self):
+  #     return self._credentials
 
-    def locked_put(self, credentials):
-      self._credentials = credentials
+  #   def locked_put(self, credentials):
+  #     self._credentials = credentials
   # pylint: enable=invalid-name,missing-docstring
 
   def __init__(self, user, keydata,
@@ -417,13 +417,13 @@ class UploadToMfgInspector(object):
     self.keydata = keydata
     self.token_uri = token_uri
     self.destination_url = destination_url
-    self.credentials = oauth2client.client.SignedJwtAssertionCredentials(
+    # self.credentials = oauth2client.client.SignedJwtAssertionCredentials(
         service_account_name=self.user,
         private_key=self.keydata,
         scope=self.SCOPE_CODE_URI,
         user_agent='OpenHTF Guzzle Upload Client',
         token_uri=self.token_uri)
-    self.credentials.set_store(self._MemStorage())
+    # self.credentials.set_store(self._MemStorage())
 
   @classmethod
   def from_json(cls, json_data):
@@ -447,9 +447,9 @@ class UploadToMfgInspector(object):
       testrun: TestRun proto or filepath.
     """
     http = httplib2.Http()
-    if self.credentials.access_token_expired:
-      self.credentials.refresh(http)
-    self.credentials.authorize(http)
+    # if self.credentials.access_token_expired:
+    #   self.credentials.refresh(http)
+    # self.credentials.authorize(http)
 
     if isinstance(testrun, test_runs_pb2.TestRun):
       serialized_run = testrun.SerializeToString()
